@@ -2,15 +2,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-data = pd.read_csv('london_weather.csv')
+data = pd.read_csv("world-data-2023.csv")
+abr = ["CZ","KP","RU","US"]
 
-january_2020 = data[(data["date"] >= 20200101) & (data["date"] <= 20200131)]
-custom_x = [f"{i}." for i in range(1,32)]
+countries = data[data["Abbreviation"].isin(abr)]
+army_size = []
 
-plt.figure(figsize=(10,10))
-plt.bar(january_2020["date"],january_2020["max_temp"])
-plt.title('January 2020 - London')
-plt.xticks(january_2020["date"],custom_x)
-plt.xlabel("Days")
-plt.ylabel("Highest Temperature")
+
+for i in [44,127,143,186]:
+    countries.at[i,"Armed Forces size"] = countries.at[i,"Armed Forces size"].replace(",","")
+
+
+for country in countries["Armed Forces size"]:
+    army_size.append(float(country))
+
+labels = ["Czech Republic", "North Korea", "Russia", "United States"]
+
+plt.pie(army_size,labels=labels,autopct='%1.1f%%')
+plt.title("Armed Forces Size")
 plt.show()

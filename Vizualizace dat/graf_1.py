@@ -1,23 +1,14 @@
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 
-data = pd.read_csv("world-data-2023.csv")
-abr = ["CZ","KP","RU","US"]
+#databáze hráčů hrajících v NBA v jednotlivých sezónách
+data = pd.read_csv("all_seasons.csv")
 
-countries = data[data["Abbreviation"].isin(abr)]
-army_size = []
+#vyselectuji pouze hráče hrající v 2021-22 season, kteří skórovali více než 28 bodů na zápas
+season = data[(data["season"] == "2021-22") & (data["pts"] > 28)]
 
-
-for i in [44,127,143,186]:
-    countries.at[i,"Armed Forces size"] = countries.at[i,"Armed Forces size"].replace(",","")
-
-
-for country in countries["Armed Forces size"]:
-    army_size.append(float(country))
-
-labels = ["Czech Republic", "North Korea", "Russia", "United States"]
-
-plt.pie(army_size,labels=labels,autopct='%1.1f%%')
-plt.title("Armed Forces Size")
+plt.bar(season["player_name"],season["pts"])
+plt.title("NBA players who averaged over 28 points per game (2021-22)")
+plt.ylabel("points per game")
+plt.xlabel("players")
 plt.show()

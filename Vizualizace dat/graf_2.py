@@ -1,19 +1,30 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-data = pd.read_csv("world-data-2023.csv")
+#databáze hráčů hrajících v NBA v jednotlivých sezónách
+data = pd.read_csv("all_seasons.csv")
 
+season = data[(data["season"] == "2021-22")]
 
+usa = 0
+canada = 0
+serbia = 0
+france = 0
 
-for i in range(195):
-    data.at[i,"Density\n(P/Km2)"] = int(data.at[i,"Density\n(P/Km2)"].replace(",",""))
+#vypočítám kolik hračů je z těchto zemí
+for i in season["country"]:
+    if i == "USA":
+        usa += 1
+    elif i == "Canada":
+        canada += 1
+    elif i == "Serbia":
+        serbia += 1
+    elif i == "France":
+        france += 1
 
-sel_data = data[data["Density\n(P/Km2)"] > 1000]
-rem_data = sel_data[sel_data["Country"] != "Vatican City"]
+countries = [usa, canada, serbia, france]
+names = ["USA","Canada","Serbia","France"]
 
-
-plt.bar(rem_data["Country"],rem_data["GDP"])
-plt.title("Countries with density over 1000(P/Km2)")
-plt.xlabel("Countries")
-plt.ylabel("GDP")
+plt.pie(countries,labels=names,autopct='%1.1f%%')
+plt.title("Percentages of NBA players by these countries")
 plt.show()
